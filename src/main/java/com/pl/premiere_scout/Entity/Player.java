@@ -1,4 +1,4 @@
-package com.pl.premiere_scout.player;
+package com.pl.premiere_scout.Entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;

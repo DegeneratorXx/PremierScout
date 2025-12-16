@@ -1,5 +1,7 @@
-package com.pl.premiere_scout.player;
+package com.pl.premiere_scout.Service;
 
+import com.pl.premiere_scout.Repository.PlayerRepository;
+import com.pl.premiere_scout.Entity.Player;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

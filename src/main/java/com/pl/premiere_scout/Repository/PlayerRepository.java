@@ -1,5 +1,6 @@
-package com.pl.premiere_scout.player;
+package com.pl.premiere_scout.Repository;
 
+import com.pl.premiere_scout.Entity.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,7 @@
-package com.pl.premiere_scout.player;
+package com.pl.premiere_scout.Controller;
 
+import com.pl.premiere_scout.Entity.Player;
+import com.pl.premiere_scout.Service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
