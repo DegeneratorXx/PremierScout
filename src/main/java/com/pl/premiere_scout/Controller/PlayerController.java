@@ -60,9 +60,13 @@ public class PlayerController {
     }
 
     @PostMapping
-    public ResponseEntity<Player> addPlayer(@RequestBody Player player){
-        Player createdPlayer = playerService.addPlayer(player);
-        return new ResponseEntity<>(createdPlayer,HttpStatus.CREATED);
+    public ResponseEntity<?> addPlayer(@RequestBody Player player){
+        try {
+            Player createdPlayer = playerService.addPlayer(player);
+            return new ResponseEntity<>(createdPlayer, HttpStatus.CREATED);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     @PutMapping

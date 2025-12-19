@@ -72,6 +72,9 @@ public class PlayerService {
     }
 
     public Player addPlayer(Player player){
+        if (playerRepository.existsById(player.getName())) {
+            throw new IllegalStateException("Player already exists");
+        }
         playerRepository.save(player);
         return player;
     }
