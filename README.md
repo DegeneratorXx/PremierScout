@@ -20,6 +20,7 @@ A Spring Boot application that provides a REST API to manage football players. T
     *   Name
     *   Position
     *   Nation
+*   **GET Players (Paginated)**: Retrieve players in pages.
 *   **ADD Player**: Add a new player to the database.
 *   **UPDATE Player**: Update an existing player's information.
 *   **DELETE Player**: Remove a player from the database.
@@ -54,6 +55,7 @@ The base URL for the API is `/api/player`.
 | Method | Endpoint                                   | Description                                       |
 |--------|--------------------------------------------|---------------------------------------------------|
 | `GET`    | `/`                                        | Get all players.                                  |
+| `GET`    | `/page`                                    | Get players in pages (e.g., `/?page=0&size=5`).    |
 | `GET`    | `/?name={name}`                            | Get players by name.                              |
 | `GET`    | `/?team={team}`                            | Get players by team.                              |
 | `GET`    | `/?position={position}`                    | Get players by position.                          |
