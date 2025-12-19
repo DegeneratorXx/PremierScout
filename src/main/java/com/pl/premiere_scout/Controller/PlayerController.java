@@ -3,6 +3,9 @@ package com.pl.premiere_scout.Controller;
 import com.pl.premiere_scout.Entity.Player;
 import com.pl.premiere_scout.Service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +22,23 @@ public class PlayerController {
         this.playerService=playerService;
     }
 
+    @GetMapping(path = "page")
+    public Page<Player> getPlayersInPages(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size){
+
+        Pageable pageable = PageRequest.of(page,size);
+        return playerService.getPlayersPaginated(pageable);
+    }
+
     @GetMapping
     public List<Player> getPlayers(
+
             @RequestParam(required = false) String team,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String position,
             @RequestParam(required = false) String nation){
+
 
         if(team!=null && position!=null)
             return playerService.getPlayerByTeamAnPosition(team,position);

@@ -4,13 +4,16 @@ import com.pl.premiere_scout.Repository.PlayerRepository;
 import com.pl.premiere_scout.Entity.Player;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class PlayerService {
 
     public final PlayerRepository playerRepository;
@@ -24,6 +27,9 @@ public class PlayerService {
         return playerRepository.findAll();
     }
 
+    public Page<Player> getPlayersPaginated(Pageable pageable){
+        return playerRepository.findAll(pageable);
+    }
     public List<Player> getPlayerByTeam(String teamName) {
         if (teamName == null) return List.of(); // optional: handle null input
         return playerRepository.findAll().stream()
@@ -64,7 +70,6 @@ public class PlayerService {
                         position.equalsIgnoreCase(player.getPos()))
                 .collect(Collectors.toList());
     }
-
 
     public Player addPlayer(Player player){
         playerRepository.save(player);
