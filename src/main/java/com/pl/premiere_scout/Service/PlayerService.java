@@ -1,5 +1,7 @@
 package com.pl.premiere_scout.Service;
 
+import com.pl.premiere_scout.Exceptions.DuplicatePlayerException;
+import com.pl.premiere_scout.Exceptions.PlayerNotFoundException;
 import com.pl.premiere_scout.Repository.PlayerRepository;
 import com.pl.premiere_scout.Entity.Player;
 import jakarta.transaction.Transactional;
@@ -30,6 +32,7 @@ public class PlayerService {
     public Page<Player> getPlayersPaginated(Pageable pageable){
         return playerRepository.findAll(pageable);
     }
+
     public List<Player> getPlayerByTeam(String teamName) {
         if (teamName == null) return List.of(); // optional: handle null input
         return playerRepository.findAll().stream()
@@ -73,31 +76,36 @@ public class PlayerService {
 
     public Player addPlayer(Player player){
         if (playerRepository.existsById(player.getName())) {
-            throw new IllegalStateException("Player already exists");
+            throw new DuplicatePlayerException("Player Already Exists! "+ player.getName());
         }
         playerRepository.save(player);
         return player;
     }
 
     public Player updatePlayer(Player updatedPlayer){
-        Optional<Player> existingPlayer=playerRepository.findByName(updatedPlayer.getName());
+        Player playerToUpdate = playerRepository.findByName(updatedPlayer.getName())
+                .orElseThrow(
+                        () -> new PlayerNotFoundException
+                                ("Player not found: " + updatedPlayer.getName())
+                );
+        playerToUpdate.setAge(updatedPlayer.getAge());
+        playerToUpdate.setNation(updatedPlayer.getNation());
+        playerToUpdate.setPos(updatedPlayer.getPos());
+        playerToUpdate.setTeam(updatedPlayer.getTeam());
 
-        if(existingPlayer.isPresent()){
-            Player playerToUpdate=existingPlayer.get();
-            playerToUpdate.setName(updatedPlayer.getName());
-            playerToUpdate.setAge(updatedPlayer.getAge());
-            playerToUpdate.setNation(updatedPlayer.getNation());
-            playerToUpdate.setPos(updatedPlayer.getPos());
-            playerToUpdate.setTeam(updatedPlayer.getTeam());
-
-            playerRepository.save(playerToUpdate);
-            return playerToUpdate;
-        }
-        return  null;
+        return playerRepository.save(playerToUpdate);
     }
+
 
     @Transactional
     public void deletePlayer(String playerName){
+
+        if(!playerRepository.existsById(playerName)){
+            throw new PlayerNotFoundException(
+                    "Player not Found"+ playerName
+            );
+        }
+
         playerRepository.deleteByName(playerName);
     }
 
