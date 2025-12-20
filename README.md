@@ -65,6 +65,38 @@ The base URL for the API is `/api/player`.
 | `PUT`    | `/`                                        | Update an existing player.                        |
 | `DELETE` | `/{playerName}`                            | Delete a player by their name.                    |
 
+## Global Exception Handling
+
+This project implements centralized exception handling using Spring Boot’s `@ControllerAdvice` to ensure consistent and meaningful API error responses.
+
+### Implemented Exceptions
+
+- **PlayerNotFoundException:** 
+  Thrown when a player is not found during update or delete ops.  
+  HTTP Status: 404 Not Found
+
+- **DuplicatePlayerException:** Thrown when attempting to add a player that already exists.  
+  HTTP Status: 409 Conflict
+
+### Error Response Structure
+
+```json
+{
+  "status": 404,
+  "message": "Player not Found Lakshitttt",
+  "timestamp": "2025-12-20T17:26:05.218"
+}
+```
+### API Behavior Examples
+
+| Endpoint | Scenario | HTTP Status |
+|--------|----------|-------------|
+| DELETE `/api/player/{name}` | Player does not exist | 404 Not Found |
+| POST `/api/player` | Player already exists | 409 Conflict |
+| PUT `/api/player` | Player not found | 404 Not Found |
+
+
+
 ## API Documentation
 
 This project uses `springdoc-openapi` to automatically generate API documentation. Once the application is running, you can access the Swagger UI at the following URL:
